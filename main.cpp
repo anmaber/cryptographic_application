@@ -18,7 +18,10 @@ int main()
 {
     std::map<char,char> key=createKey();
     std::string a="zdanie ma sens";
-    std::cout<<encrypt(a,key);
+    std::string toencrypt,toDecrypt;
+    toencrypt=encrypt(a,key);
+    std::cout<<toencrypt<<std::endl;
+    std::cout<<decrypt(toencrypt,key);
 
     return 0;
 }
@@ -60,6 +63,15 @@ std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key)
 
 std::string decrypt(std::string& messageToDecrypt,std::map<char,char> key)
 {
-    return "rsdtf";
+   std::string decrypted;
+   for(unsigned int i=0;i<messageToDecrypt.size();++i){
+    auto findLetter = std::find_if(std::begin(key), std::end(key), [&](const std::pair<char,char> &pair)
+    {
+        return pair.second == messageToDecrypt[i];
+    });
+
+    decrypted.push_back(findLetter->first);
+   }
+    return decrypted;
 }
 
