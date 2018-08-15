@@ -17,7 +17,7 @@ int main()
 
 {
     std::map<char,char> key=createKey();
-    std::string a="zdaniemasens";
+    std::string a="zdanie ma sens";
     std::cout<<encrypt(a,key);
 
     return 0;
@@ -26,9 +26,8 @@ int main()
 std::map<char,char> createKey()
 {
     std::vector<char> ascii;
-//std::vector<char> shuffled;
 
-    for(unsigned int i=33; i<127; ++i)
+    for(unsigned int i=32; i<127; ++i)
     {
         ascii.push_back(char(i));
     }
