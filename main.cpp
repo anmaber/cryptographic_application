@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <random>
+#include <numeric>
 
 std::map<char,char> createKey();
 std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key);
@@ -29,12 +30,9 @@ int main()
 
 std::map<char,char> createKey()
 {
-    std::vector<char> ascii;
 
-    for(unsigned int i=32; i<127; ++i)
-    {
-        ascii.push_back(char(i));
-    }
+    std::vector<char> ascii(94) ;
+    std::iota (std::begin(ascii), std::end(ascii), 32);
 
     std::vector<int> shuffled(ascii.begin(),ascii.end());
     std::random_device rd;
@@ -55,6 +53,7 @@ std::map<char,char> createKey()
 std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key)
 {
     std::string encrypted;
+    //std::generate_n(std::back_inserter(encrypted), messageToEncrypt.size(), [&](){ });
     for(unsigned int i=0; i<messageToEncrypt.size(); ++i)
     {
         encrypted.push_back(key[messageToEncrypt[i]]);
@@ -64,15 +63,16 @@ std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key)
 
 std::string decrypt(std::string& messageToDecrypt,std::map<char,char> key)
 {
-   std::string decrypted;
-   for(unsigned int i=0;i<messageToDecrypt.size();++i){
-    auto findLetter = std::find_if(std::begin(key), std::end(key), [&](const std::pair<char,char> &pair)
+    std::string decrypted;
+    for(unsigned int i=0; i<messageToDecrypt.size(); ++i)
     {
-        return pair.second == messageToDecrypt[i];
-    });
+        auto findLetter = std::find_if(std::begin(key), std::end(key), [&](const std::pair<char,char> &pair)
+        {
+            return pair.second == messageToDecrypt[i];
+        });
 
-    decrypted.push_back(findLetter->first);
-   }
+        decrypted.push_back(findLetter->first);
+    }
     return decrypted;
 }
 
