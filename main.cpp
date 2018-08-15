@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <iterator>
+#include <random>
 
 std::map<char,char> createKey();
 std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key);
