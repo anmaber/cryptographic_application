@@ -19,7 +19,7 @@ int main()
 
 {
     std::map<char,char> key=createKey();
-    std::string a="zdanie ma sens";
+    std::string a="zdanie ma sens. aa: / $ @";
     std::string toencrypt,toDecrypt;
     toencrypt=encrypt(a,key);
     std::cout<<toencrypt<<std::endl;
@@ -53,11 +53,9 @@ std::map<char,char> createKey()
 std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key)
 {
     std::string encrypted;
-    //std::generate_n(std::back_inserter(encrypted), messageToEncrypt.size(), [&](){ });
-    for(unsigned int i=0; i<messageToEncrypt.size(); ++i)
-    {
-        encrypted.push_back(key[messageToEncrypt[i]]);
-    }
+    
+    std::transform(messageToEncrypt.begin(), messageToEncrypt.end(), std::back_inserter(encrypted), 
+                    [&](char c) -> char {return key[(int)c];});
     return encrypted;
 }
 
