@@ -8,22 +8,24 @@
 #include <iterator>
 #include <random>
 #include <numeric>
+#include <functional>
 
 std::map<char,char> createKey();
+
 std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key);
 std::string decrypt(std::string& messageToDecrypt,std::map<char,char> key);
-
-
 
 int main()
 
 {
     std::map<char,char> key=createKey();
+    
     std::string a="zdanie ma sens. aa: / $ @";
     std::string toencrypt,toDecrypt;
-    toencrypt=encrypt(a,key);
+    toencrypt = encrypt(a,key);
     std::cout<<toencrypt<<std::endl;
-    std::cout<<decrypt(toencrypt,key);
+    toDecrypt = decrypt(toencrypt,key);
+    std::cout<<toDecrypt << std::endl;
 
     return 0;
 }
@@ -55,22 +57,24 @@ std::string encrypt(std::string& messageToEncrypt,std::map<char,char> key)
     std::string encrypted;
     
     std::transform(messageToEncrypt.begin(), messageToEncrypt.end(), std::back_inserter(encrypted), 
-                    [&](char c) -> char {return key[(int)c];});
+                    [&](char letter) -> char {return key[(int)letter];});
     return encrypted;
 }
 
 std::string decrypt(std::string& messageToDecrypt,std::map<char,char> key)
 {
     std::string decrypted;
-    for(unsigned int i=0; i<messageToDecrypt.size(); ++i)
-    {
-        auto findLetter = std::find_if(std::begin(key), std::end(key), [&](const std::pair<char,char> &pair)
+
+   std::transform(std::begin(messageToDecrypt), std::end(messageToDecrypt),std::back_inserter(decrypted),
+   [&](char x) -> char
+   {
+    auto findLetter = std::find_if(std::begin(key), std::end(key), [&](const std::pair<char,char> &pair)
         {
-            return pair.second == messageToDecrypt[i];
+            return pair.second == x;
         });
-
-        decrypted.push_back(findLetter->first);
-    }
+    return findLetter->first;
+   }
+   
+    );
     return decrypted;
-}
-
+}   
