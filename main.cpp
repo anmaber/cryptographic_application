@@ -66,23 +66,50 @@ std::string decrypt(std::string& messageToDecrypt,std::map<char,char> key)
     );
     return decrypted;
 }   
-void addToExternalFile(std::string encrypted, std::string decrypted)
+void exportToExternalFile(std::string encrypted, std::string decrypted)
 {
     std::ofstream out ("data.txt");
     out << encrypted << std::endl;
     out << decrypted << std::endl;
     out.close();
 }
+std::string importEncryptDataFromExternalFile()
+{
+    std::string textFromFile;
+    std::ifstream in("data.txt");
+    if(in.is_open())
+    {
+        getline(in, textFromFile);
+    }
+    return textFromFile;
+}
+std::string importDecryptDataFromExternalFile()
+{
+    std::string textFromFile;
+    std::ifstream in("data.txt");
+    if(in.is_open())
+    {
+        in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        getline(in, textFromFile);
+    }
+    return textFromFile;
+}
+void show(std::string text)
+{
+    std::cout << text << std::endl;
+}
 int main()
 {
-
-
-    std::string a="This letter make sense and have special sign like ! @ # $ % ^ & * and more from ASCII.";
-    std::string toencrypt,toDecrypt;
-    toencrypt = encrypt(a,key);
-    std::cout<<toencrypt<<std::endl;
-    toDecrypt = decrypt(toencrypt,key);
-    std::cout<<toDecrypt << std::endl;
-    addToExternalFile(toencrypt, toDecrypt);
+    show("Load from file: ");
+    show(importEncryptDataFromExternalFile());
+    show(importDecryptDataFromExternalFile());
+    show("With diffrent random key:");
+    std::string insteandOfCin="This letter make sense and have special sign like ! @ # $ % ^ & * and more from ASCII.";
+    std::string toEncrypt,toDecrypt;
+    toEncrypt = encrypt(insteandOfCin,key);
+    show(toEncrypt);
+    toDecrypt = decrypt(toEncrypt,key);
+    show(toDecrypt);
+    exportToExternalFile(toEncrypt, toDecrypt);
     return 0;
 }
