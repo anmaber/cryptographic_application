@@ -1,4 +1,6 @@
 Cryptographic application.
+Technology: STL, Algorithm, POD, POP,
+
 Requirements:
 1. Substitution ciphering (map letter -> cipher)
 2. Encryption and decryption
